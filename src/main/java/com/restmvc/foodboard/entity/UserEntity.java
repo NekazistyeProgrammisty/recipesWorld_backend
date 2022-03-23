@@ -2,6 +2,7 @@ package com.restmvc.foodboard.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,18 +16,34 @@ public class UserEntity {
     private String avatarLink;
     private LocalDate regDate;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "favoriteRecipes",
             joinColumns = @JoinColumn,
             inverseJoinColumns = @JoinColumn
     )
-    List<RecipeEntity> favRecipes;
+    List<RecipeEntity> favRecipes = new ArrayList<>();
 
     public UserEntity() {
 
     }
 
+    public List<RecipeEntity> getFavRecipes() {
+        return favRecipes;
+    }
+
+    public void setFavRecipes(List<RecipeEntity> favRecipes) {
+        this.favRecipes = favRecipes;
+    }
+
+    public void addFavRecipes(RecipeEntity recipe){
+        favRecipes.add(recipe); //сначала добавляем рецепт в наш список
+        recipe.getUsersFavRecipes().add(this); //затем добавляем юзера в рецепты
+    }
+    public void removeFavRecipes(RecipeEntity recipe){
+        favRecipes.remove(recipe);
+        recipe.getUsersFavRecipes().remove(this);
+    }
     public Long getId() {
         return id;
     }
