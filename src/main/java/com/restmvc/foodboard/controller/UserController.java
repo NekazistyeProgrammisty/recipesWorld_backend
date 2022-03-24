@@ -44,7 +44,7 @@ public class UserController {
                                               @PathVariable(name = "recipes") String recs){
         try {
             Long idUser = userService.addFavRecipes(userId,recs);
-            return new ResponseEntity("Пользователь "+idUser+" успешно удален",HttpStatus.OK);
+            return new ResponseEntity("Пользователь "+idUser+" успешно обновлен",HttpStatus.OK);
         }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
 

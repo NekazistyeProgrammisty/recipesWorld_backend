@@ -16,7 +16,7 @@ public class UserEntity {
     private String avatarLink;
     private LocalDate regDate;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "favoriteRecipes",
             joinColumns = @JoinColumn,
@@ -91,4 +91,5 @@ public class UserEntity {
     public void setRegDate(LocalDate regDate) {
         this.regDate = regDate;
     }
+
 }

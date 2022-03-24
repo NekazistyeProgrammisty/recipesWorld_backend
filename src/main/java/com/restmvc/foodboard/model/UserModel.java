@@ -3,6 +3,7 @@ package com.restmvc.foodboard.model;
 import com.restmvc.foodboard.entity.RecipeEntity;
 import com.restmvc.foodboard.entity.UserEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserModel {
@@ -21,8 +22,15 @@ public class UserModel {
     public UserModel() {
     }
 
-    public List<RecipeEntity> getFavRecipes() {
-        return favRecipes;
+
+    public List<Long> getFavRecipes() {
+        ArrayList<Long> recipesIds= new ArrayList<>();
+        if(favRecipes == null){
+            recipesIds = null;
+        }else for(RecipeEntity rec:favRecipes){
+            recipesIds.add(rec.getRecipeId());
+        }
+        return recipesIds;
     }
 
     public void setFavRecipes(List<RecipeEntity> favRecipes) {
@@ -51,6 +59,22 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        ArrayList<Long> recipesIds= new ArrayList<>();
+        if(favRecipes == null){
+            recipesIds = null;
+        }else for(RecipeEntity rec:favRecipes){
+            recipesIds.add(rec.getRecipeId());
+        }
+        return "UserModel{" +
+                "id=" + id +
+                ", nickName='" + nickName + '\'' +
+                ", email='" + email + '\'' +
+                ", favRecipesIds=" + recipesIds +
+                '}';
     }
 }
 

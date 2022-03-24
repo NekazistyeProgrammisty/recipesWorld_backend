@@ -39,11 +39,13 @@ public class UserService {
     public Long addFavRecipes(Long userId, String recIds) throws NotFoundedException{
         Optional<UserEntity> user = userRepo.findById(userId);
         if(user.isPresent()){
+            UserEntity userEnt = user.get();
             for (Long recId:recipeService.parseIds(recIds)){
                try{
-                   user.get().addFavRecipes(recipeService.getRecById(recId));
+                   userEnt.addFavRecipes(recipeService.getRecById(recId));
                }catch (NotFoundedException e){throw e;}
             }
+            userRepo.save(userEnt);
             return userId;
 
         }else throw new NotFoundedException("Пользователь не найден");
