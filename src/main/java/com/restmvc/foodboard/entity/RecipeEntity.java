@@ -1,5 +1,7 @@
 package com.restmvc.foodboard.entity;
 
+import com.restmvc.foodboard.entity_parts.EmbProdRecId;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +21,15 @@ public class RecipeEntity {
     @ManyToMany(mappedBy = "favRecipes")
     private List<UserEntity> usersFavRecipes = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    List<ProdRecEntity> products;
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "recipe")
+    private List<ProdRecEntity> products = new ArrayList<>();
+
+    @ManyToOne
+    private RecipeCategories category;
 
     public RecipeEntity() {
     }
 
-    public RecipeEntity(Long recipeId, String title, String description, String imgLink, Integer productsNum) {
-        this.recipeId = recipeId;
-        this.title = title;
-        this.description = description;
-        this.imgLink = imgLink;
-        this.productsNum = productsNum;
-    }
 
     public List<UserEntity> getUsersFavRecipes() {
         return usersFavRecipes;
@@ -81,7 +79,13 @@ public class RecipeEntity {
         this.productsNum = productsNum;
     }
 
+    public List<ProdRecEntity> getProducts() {
+        return products;
+    }
 
+    public void setProducts(List<ProdRecEntity> products) {
+        this.products = products;
+    }
 
 //    public List<ProdRecEntity> getProducts() {
 //        return products;

@@ -2,22 +2,21 @@ package com.restmvc.foodboard.model;
 
 import com.restmvc.foodboard.entity.ProductEntity;
 
-public class ProductModel {
+public class ProductModelPure {
     private Long idProd;
     private String title;
     private Integer calorie;
     private Integer freshDays;
+    private String imgLink;
 
-    public ProductModel toModel(ProductEntity entity){
-        ProductModel product = new ProductModel();
-        product.setIdProd(entity.getIdProd());
-        product.setTitle(entity.getTitle());
-        product.setCalorie(entity.getCalorie());
-        product.setFreshDays(entity.getFreshDays());
-        return product;
-    }
+    public ProductModelPure(){}
 
-    public ProductModel() {
+    public void toModel(ProductEntity product){
+        this.setIdProd(product.getIdProd());
+        this.setCalorie(product.getCalorie());
+        this.setFreshDays(product.getFreshDays());
+        this.setImgLink(product.getImgLink());
+        this.setTitle(product.getTitle());
     }
 
     public Long getIdProd() {
@@ -50,5 +49,13 @@ public class ProductModel {
 
     public void setFreshDays(Integer freshDays) {
         this.freshDays = freshDays;
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
     }
 }

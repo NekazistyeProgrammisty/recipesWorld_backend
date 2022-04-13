@@ -2,26 +2,21 @@ package com.restmvc.foodboard.model;
 
 import com.restmvc.foodboard.entity.RecipeEntity;
 
-public class RecipeModel {
+public class RecipeModelPure {
     private Long recipeId;
     private String title;
     private String description;
     private String imgLink;
     private Integer productsNum;
 
-    public static RecipeModel toModel(RecipeEntity entity){
-        RecipeModel recipe = new RecipeModel();
-        recipe.setRecipeId(entity.getRecipeId());
-        recipe.setTitle(entity.getTitle());
-        recipe.setDescription(entity.getDescription());
-        recipe.setImgLink(entity.getImgLink());
-        recipe.setProductsNum(entity.getProductsNum());
-        return recipe;
+    public RecipeModelPure(){}
+    public void toModel(RecipeEntity entity){
+        this.setRecipeId(entity.getRecipeId());
+        this.setTitle(entity.getTitle());
+        this.setDescription(entity.getDescription());
+        this.setImgLink(entity.getImgLink());
+        this.setProductsNum(entity.getProductsNum());
     }
-
-    public RecipeModel() {
-    }
-
     public Long getRecipeId() {
         return recipeId;
     }
@@ -61,4 +56,6 @@ public class RecipeModel {
     public void setProductsNum(Integer productsNum) {
         this.productsNum = productsNum;
     }
+
+
 }
