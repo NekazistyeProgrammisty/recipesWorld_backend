@@ -9,7 +9,7 @@ public class RecipeModelPure {
     private String description;
     private String imgLink;
     private Integer productsNum;
-    private RecipeCategoriesEntity category;
+    private String category;
     public RecipeModelPure(){}
     public void toModel(RecipeEntity entity){
         this.setRecipeId(entity.getRecipeId());
@@ -17,14 +17,14 @@ public class RecipeModelPure {
         this.setDescription(entity.getDescription());
         this.setImgLink(entity.getImgLink());
         this.setProductsNum(entity.getProductsNum());
-        this.setCategory(entity.getCategory());
+        this.setCategory(entity.getCategory().getCategory());
     }
 
-    public RecipeCategoriesEntity getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(RecipeCategoriesEntity category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

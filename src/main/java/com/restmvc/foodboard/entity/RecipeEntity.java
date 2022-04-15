@@ -22,7 +22,7 @@ public class RecipeEntity {
     private List<ProdRecEntity> products = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "recipe_category")
+    @JoinColumn(name = "recipe_category", referencedColumnName = "cat_id")
     private RecipeCategoriesEntity category;
 
     public RecipeEntity() {

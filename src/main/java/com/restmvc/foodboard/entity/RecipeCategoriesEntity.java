@@ -8,21 +8,23 @@ import java.util.List;
 public class RecipeCategoriesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "cat_id")
+    Long catId;
+
     String category;
 
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "category")
     List<RecipeEntity> recipes = new ArrayList<>();
 
     public RecipeCategoriesEntity() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getCatId() {
+        return catId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCatId(Long catId) {
+        this.catId = catId;
     }
 
     public String getCategory() {

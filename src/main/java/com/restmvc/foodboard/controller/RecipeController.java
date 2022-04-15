@@ -22,9 +22,9 @@ public class RecipeController {
     public ResponseEntity getById(@PathVariable(name = "recipeId") Long recipeId){
         try {
             RecipeModelPure model = new RecipeModelPure();
-            model.toModel(recipeService.getRecById(recipeId));
-            return new ResponseEntity(model, HttpStatus.BAD_REQUEST);
-        }catch (NotFoundedException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);}
+            model.toModel(recipeService.getOneRecById(recipeId));
+            return new ResponseEntity(model, HttpStatus.OK);
+        }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);}
     }
 
 

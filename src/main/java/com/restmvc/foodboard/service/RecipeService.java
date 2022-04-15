@@ -3,6 +3,7 @@ package com.restmvc.foodboard.service;
 import com.restmvc.foodboard.entity.ProdRecEntity;
 import com.restmvc.foodboard.entity.ProductEntity;
 import com.restmvc.foodboard.entity.RecipeEntity;
+import com.restmvc.foodboard.entity.UserEntity;
 import com.restmvc.foodboard.entity_parts.EmbProdRecId;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
@@ -53,7 +54,7 @@ public class RecipeService {
 
       public RecipeModelProd getWithProducts(Long recId)throws NotFoundedException{
             try{
-                RecipeEntity rec = getRecById(recId);
+                RecipeEntity rec = getOneRecById(recId);
                 RecipeModelProd recModel = new RecipeModelProd();
                 recModel.toModel(rec);
                 return recModel;
@@ -61,11 +62,11 @@ public class RecipeService {
 
       }
 
-    public RecipeEntity getRecById(Long id) throws NotFoundedException{
+    public RecipeEntity getOneRecById(Long id) throws NotFoundedException{
         Optional<RecipeEntity> recipe = recRepo.findById(id);
         if(recipe.isPresent()){
             return recipe.get();
-        }else throw new NotFoundedException("Такого блюда не существует");
+        }else throw new NotFoundedException("Рецпт не найден");
     }
 
 

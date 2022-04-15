@@ -52,8 +52,8 @@ public class UserController {
     public ResponseEntity addFavouriteRecipes(@PathVariable(name = "id") Long userId,
                                               @PathVariable(name = "recipes") String recs) {
         try {
-            Long idUser = userService.addFavRecipes(userId, recs);
-            return new ResponseEntity("Пользователь " + idUser + " успешно обновлен", HttpStatus.OK);
+            userService.addFavRecipes(userId, recs);
+            return new ResponseEntity("Пользователь " + userId + " успешно обновлен", HttpStatus.OK);
         } catch (NotFoundedException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
