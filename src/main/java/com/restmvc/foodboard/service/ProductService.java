@@ -1,13 +1,17 @@
 package com.restmvc.foodboard.service;
 
 import com.restmvc.foodboard.entity.ProductEntity;
+import com.restmvc.foodboard.entity.RecipeEntity;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
+import com.restmvc.foodboard.model.ProductModelPure;
 import com.restmvc.foodboard.model.ProductModelRecipes;
+import com.restmvc.foodboard.model.RecipeModelPure;
 import com.restmvc.foodboard.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -18,6 +22,19 @@ public class ProductService {
         if(prodRepo.findBytitle(product.getTitle())==null){
                 prodRepo.save(product);
         }else throw new AlreadyExistException("Продукт уже существует");
+    }
+
+    public ArrayList<ProductModelPure> getAll() throws NotFoundedException{
+        ArrayList<ProductEntity> allEntities = (ArrayList<ProductEntity>) prodRepo.findAll();
+        if(!allEntities.isEmpty()) {
+            ArrayList<ProductModelPure> pureProds = new ArrayList<>();
+            for (ProductEntity product : allEntities) {
+                ProductModelPure model = new ProductModelPure();
+                model.toModel(product);
+                pureProds.add(model);
+            }
+            return pureProds;
+        }else throw new NotFoundedException("Продукты не найдены");
     }
 
     public ProductEntity getProdById(Long id) throws NotFoundedException {

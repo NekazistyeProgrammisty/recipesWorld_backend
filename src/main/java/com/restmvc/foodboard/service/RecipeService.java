@@ -7,11 +7,14 @@ import com.restmvc.foodboard.entity_parts.EmbProdRecId;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
 import com.restmvc.foodboard.model.RecipeModelProd;
+import com.restmvc.foodboard.model.RecipeModelPure;
 import com.restmvc.foodboard.model.RecipeModelUsers;
 import com.restmvc.foodboard.repository.ProdRecRepo;
 import com.restmvc.foodboard.repository.RecipeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -84,6 +87,19 @@ public class RecipeService {
         }
     }
 
+    public ArrayList<RecipeModelPure> getAll() throws NotFoundedException{
+        ArrayList<RecipeEntity> allEntities = (ArrayList<RecipeEntity>) recRepo.findAll();
+        if(!allEntities.isEmpty()) {
+            ArrayList<RecipeModelPure> pureRecs = new ArrayList<>();
+            for (RecipeEntity recipe : allEntities) {
+                RecipeModelPure model = new RecipeModelPure();
+                model.toModel(recipe);
+                pureRecs.add(model);
+            }
+            return pureRecs;
+        }else throw new NotFoundedException("Рецепты не найдены");
+    }
+
     public Long[] parseIds(String recIds){
         String[] s = recIds.split("I");
         Long[] ids = new Long[s.length];
@@ -92,4 +108,6 @@ public class RecipeService {
         }
         return ids;
     }
+
+
 }

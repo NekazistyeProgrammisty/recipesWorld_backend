@@ -19,6 +19,7 @@ public class UserService {
     @Autowired
     private RecipeService recipeService;
 
+
     public void registration(UserEntity user) throws AlreadyExistException {
         if(userRepo.findBynickName(user.getNickName())==null){
             userRepo.save(user);
@@ -42,12 +43,16 @@ public class UserService {
             return model;
         }else{throw new NotFoundedException("Пользователь не найден");}
     }
+
+
     public Long deleteById(Long id) throws NotFoundedException {
         if(userRepo.findById(id).isPresent()) {
             userRepo.deleteById(id);
             return id;
         }else throw new NotFoundedException("Пользователя "+id+" не существует");
     }
+
+
     public Long addFavRecipes(Long userId, String recIds) throws NotFoundedException{
         Optional<UserEntity> user = userRepo.findById(userId);
         if(user.isPresent()){

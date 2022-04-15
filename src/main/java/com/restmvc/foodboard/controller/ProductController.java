@@ -11,18 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping
-    public ResponseEntity newProduct(@RequestBody ProductEntity product){
-        try{
-            productService.newProduct(product);
-            return new ResponseEntity("Продукт сохранен", HttpStatus.OK);
-        }catch (AlreadyExistException e){return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);}
-    }
+
     @GetMapping("/get_by_id/{prodId}")
     public ResponseEntity getById(@PathVariable Long prodId){
         try {
@@ -32,12 +26,32 @@ public class ProductController {
         }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
 
+
+    @GetMapping("/all/")
+    public ResponseEntity getAll(){
+        try{
+            return new ResponseEntity(productService.getAll(),HttpStatus.OK);
+        }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);}
+    }
+
+
     @GetMapping("/get_with_recipes/{prodId}")
     public ResponseEntity getWithRecipes(@PathVariable Long prodId){
         try{
             return new ResponseEntity(productService.getWithRecipes(prodId), HttpStatus.OK);
         }catch (NotFoundedException e ){return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
+
+
+    @PostMapping
+    public ResponseEntity newProduct(@RequestBody ProductEntity product){
+        try{
+            productService.newProduct(product);
+            return new ResponseEntity("Продукт сохранен", HttpStatus.OK);
+        }catch (AlreadyExistException e){return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);}
+    }
+
+
     @DeleteMapping("/delete/{prodId}")
     public ResponseEntity deleteById(@PathVariable Long prodId){
         try {

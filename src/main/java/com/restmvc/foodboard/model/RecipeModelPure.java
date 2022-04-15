@@ -1,5 +1,6 @@
 package com.restmvc.foodboard.model;
 
+import com.restmvc.foodboard.entity.RecipeCategoriesEntity;
 import com.restmvc.foodboard.entity.RecipeEntity;
 
 public class RecipeModelPure {
@@ -8,7 +9,7 @@ public class RecipeModelPure {
     private String description;
     private String imgLink;
     private Integer productsNum;
-
+    private RecipeCategoriesEntity category;
     public RecipeModelPure(){}
     public void toModel(RecipeEntity entity){
         this.setRecipeId(entity.getRecipeId());
@@ -16,7 +17,17 @@ public class RecipeModelPure {
         this.setDescription(entity.getDescription());
         this.setImgLink(entity.getImgLink());
         this.setProductsNum(entity.getProductsNum());
+        this.setCategory(entity.getCategory());
     }
+
+    public RecipeCategoriesEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(RecipeCategoriesEntity category) {
+        this.category = category;
+    }
+
     public Long getRecipeId() {
         return recipeId;
     }

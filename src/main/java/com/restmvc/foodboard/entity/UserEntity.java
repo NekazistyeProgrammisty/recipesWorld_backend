@@ -1,5 +1,7 @@
 package com.restmvc.foodboard.entity;
 
+import com.restmvc.foodboard.entity_parts.EmbProdUser;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,8 +26,63 @@ public class UserEntity {
     )
     List<RecipeEntity> favRecipes = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.DETACH})
+    List<UserProductsEntity> products = new ArrayList<>();
+
+
     public UserEntity() {
 
+    }
+
+
+    public void addFavRecipes(RecipeEntity recipe){
+        favRecipes.add(recipe); //сначала добавляем рецепт в наш список
+        recipe.getUsersFavRecipes().add(this); //затем добавляем юзера в рецепты
+    }
+    public void removeFavRecipes(RecipeEntity recipe){
+        favRecipes.remove(recipe);
+        recipe.getUsersFavRecipes().remove(this);
+    }
+
+//    public void addUsersProduct(ProductEntity prod){
+//        UserProductsEntity prodEnt = new UserProductsEntity();
+//        EmbProdUser embId = new EmbProdUser();
+//        embId.setProdIdComp(prod.getIdProd());
+//        embId.setUserIdComp(this.getId());
+//        prodEnt.setProdUserId(embId);
+//        prodEnt.setProduct(prod);
+//        prodEnt.setUser(this);
+//        prodEnt.setTitle(prod.getTitle());
+//        prodEnt.setCalorie(prod.getCalorie());
+//        prodEnt.setFreshDays(prod.getFreshDays());
+//        prodEnt.setProductsCount(1);
+//        this.getProducts().add(prodEnt);
+//        prod.getUserProd().add(prodEnt);
+//    }
+//
+//    public void removeUsersProduct(ProductEntity prod){
+//        UserProductsEntity prodEnt = new UserProductsEntity();
+//        EmbProdUser embId = new EmbProdUser();
+//        embId.setProdIdComp(prod.getIdProd());
+//        embId.setUserIdComp(this.getId());
+//        prodEnt.setProdUserId(embId);
+//        prodEnt.setProduct(prod);
+//        prodEnt.setUser(this);
+//        prodEnt.setTitle(prod.getTitle());
+//        prodEnt.setCalorie(prod.getCalorie());
+//        prodEnt.setFreshDays(prod.getFreshDays());
+//        prodEnt.setProductsCount(1);
+//        this.getProducts().add(prodEnt);
+//        prod.getUserProd().add(prodEnt);
+//    }
+
+    public List<UserProductsEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<UserProductsEntity> products) {
+        this.products = products;
     }
 
     public List<RecipeEntity> getFavRecipes() {
@@ -36,14 +93,7 @@ public class UserEntity {
         this.favRecipes = favRecipes;
     }
 
-    public void addFavRecipes(RecipeEntity recipe){
-        favRecipes.add(recipe); //сначала добавляем рецепт в наш список
-        recipe.getUsersFavRecipes().add(this); //затем добавляем юзера в рецепты
-    }
-    public void removeFavRecipes(RecipeEntity recipe){
-        favRecipes.remove(recipe);
-        recipe.getUsersFavRecipes().remove(this);
-    }
+
     public Long getId() {
         return id;
     }
