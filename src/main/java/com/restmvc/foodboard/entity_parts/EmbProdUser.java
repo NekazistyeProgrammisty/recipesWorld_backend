@@ -41,4 +41,6 @@ public class EmbProdUser implements Serializable {
     public int hashCode() {
         return Objects.hash(prodIdComp, userIdComp);
     }
+
+
 }

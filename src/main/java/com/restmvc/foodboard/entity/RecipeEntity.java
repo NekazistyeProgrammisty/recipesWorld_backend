@@ -15,7 +15,7 @@ public class RecipeEntity {
     private String imgLink;
     private Integer productsNum;
 
-    @ManyToMany(mappedBy = "favRecipes")
+    @ManyToMany(mappedBy = "favRecipes", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH})
     private List<UserEntity> usersFavRecipes = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.DETACH}, mappedBy = "recipe")

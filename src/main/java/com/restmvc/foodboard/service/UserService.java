@@ -1,14 +1,21 @@
 package com.restmvc.foodboard.service;
 
+import com.restmvc.foodboard.entity.ProductEntity;
 import com.restmvc.foodboard.entity.UserEntity;
+import com.restmvc.foodboard.entity.UserProductsEntity;
+import com.restmvc.foodboard.entity_parts.EmbProdUser;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
+import com.restmvc.foodboard.model.UserModelProducts;
 import com.restmvc.foodboard.model.UserModelPure;
 import com.restmvc.foodboard.model.UserModelRecipes;
+import com.restmvc.foodboard.repository.UserProductsRepo;
 import com.restmvc.foodboard.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +25,10 @@ public class UserService {
     private UserRepo userRepo;
     @Autowired
     private RecipeService recipeService;
-
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private UserProductsRepo userProductsRepo;
 
     public void registration(UserEntity user) throws AlreadyExistException {
         if(userRepo.findBynickName(user.getNickName())==null){
@@ -63,6 +73,77 @@ public class UserService {
                }catch (NotFoundedException e){throw e;}
             }
             userRepo.save(userEnt);
+        }else throw new NotFoundedException("Пользователь не найден");
+    }
+
+
+    public UserProductsEntity addUsersProduct(UserEntity user, ProductEntity product){
+        UserProductsEntity usrProd = new UserProductsEntity();
+        EmbProdUser embId = new EmbProdUser();
+        embId.setUserIdComp(user.getId());
+        embId.setProdIdComp(product.getIdProd());
+        usrProd.setProdUserId(embId);
+        usrProd.setTitle(product.getTitle());
+        usrProd.setCalorie(product.getCalorie());
+        usrProd.setExpirationDate(LocalDate.now().plusDays(product.getFreshDays()));
+        usrProd.setProductsCount(1);
+        usrProd.setUser(user);
+        usrProd.setProduct(product);
+//        user.getProducts().add(usrProd);
+//        product.getUserProd().add(usrProd);
+        return usrProd;
+    }
+
+    public void addUsersProduct(Long userId, Long productId) throws NotFoundedException{
+        Optional<UserEntity> usr = userRepo.findById(userId);
+        if(usr.isPresent()){
+            try {
+                ProductEntity prod = productService.getProdById(productId);
+                userProductsRepo.save(addUsersProduct(usr.get(), prod));
+            }catch (NotFoundedException e){throw e;}
+        }
+    }
+
+    public void addUsersProduct(Long userId, Long[] productIds)throws NotFoundedException{
+        Optional<UserEntity> usr = userRepo.findById(userId);
+        if(usr.isPresent()){
+            try {
+                UserEntity user = usr.get();
+                ArrayList<UserProductsEntity> usersProds = new ArrayList<>();
+                for(Long productId:productIds){
+                    ProductEntity prod = productService.getProdById(productId);
+                    usersProds.add(addUsersProduct(user,prod));
+                }
+                userProductsRepo.saveAll(usersProds);
+            }catch (NotFoundedException e){throw e;}
+        }
+    }
+
+
+    public void updateUsersProduct(EmbProdUser embId, Integer productsCount)throws NotFoundedException{
+        Optional<UserProductsEntity> usersProd = userProductsRepo.findByprodUserId(embId);
+        if (usersProd.isPresent()){
+            UserProductsEntity usersProdEntity = usersProd.get();
+            usersProdEntity.setProductsCount(productsCount);
+            userProductsRepo.save(usersProdEntity);
+        }else throw new NotFoundedException("у пользователя нет такого продукта");
+    }
+
+    public void updateUsersProduct(EmbProdUser embId, LocalDate expirationDate)throws NotFoundedException{
+        Optional<UserProductsEntity> usersProd = userProductsRepo.findByprodUserId(embId);
+        if (usersProd.isPresent()){
+            UserProductsEntity usersProdEntity = usersProd.get();
+            usersProdEntity.setExpirationDate(expirationDate);
+            userProductsRepo.save(usersProdEntity);
+        }else throw new NotFoundedException("у пользователя нет такого продукта");
+    }
+
+    public UserModelProducts getUserWithProducts(Long userId) throws NotFoundedException{
+        Optional<UserEntity> usr = userRepo.findById(userId);
+        if(usr.isPresent()){
+            UserModelProducts model = new UserModelProducts();
+            model.toModel(usr.get());
+            return model;
         }else throw new NotFoundedException("Пользователь не найден");
     }
 

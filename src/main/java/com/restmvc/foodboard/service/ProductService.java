@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,4 +57,22 @@ public class ProductService {
             prodRepo.delete(pr.get());
         }else throw new NotFoundedException("Продукта " + id + "не существует");
     }
+
+    public ArrayList<ProductModelPure> getProdsLike(String originalWord) throws NotFoundedException{
+        String patternLike = "%"+originalWord+"%";
+        List<ProductEntity> productsEnts = new ArrayList<>();
+        ArrayList<ProductModelPure> prodModels = new ArrayList<>();
+        productsEnts = prodRepo.findByTitleLike(patternLike);
+        if(!productsEnts.isEmpty()) {
+            for (ProductEntity pr : productsEnts) {
+                ProductModelPure model = new ProductModelPure();
+                model.toModel(pr);
+                prodModels.add(model);
+            }
+            return prodModels;
+        }else throw new NotFoundedException("Подобные продукты не найдены");
+    }
+
+
+
 }

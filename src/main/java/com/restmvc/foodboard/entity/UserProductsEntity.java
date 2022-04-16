@@ -3,6 +3,7 @@ package com.restmvc.foodboard.entity;
 import com.restmvc.foodboard.entity_parts.EmbProdUser;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class UserProductsEntity {
@@ -23,7 +24,7 @@ public class UserProductsEntity {
 
     Integer calorie;
 
-    Integer freshDays;
+    LocalDate expirationDate;
 
     public UserProductsEntity() {
     }
@@ -76,11 +77,11 @@ public class UserProductsEntity {
         this.calorie = calorie;
     }
 
-    public Integer getFreshDays() {
-        return freshDays;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setFreshDays(Integer freshDays) {
-        this.freshDays = freshDays;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

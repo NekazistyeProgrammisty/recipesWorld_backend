@@ -1,10 +1,13 @@
 package com.restmvc.foodboard.model;
 
 import com.restmvc.foodboard.entity.UserProductsEntity;
+import com.restmvc.foodboard.entity_parts.EmbProdUser;
+
+import java.time.LocalDate;
 
 public class UserProductsPure {
 
-    Long originalProductId;
+    EmbProdUser embId;
 
     String title;
 
@@ -12,15 +15,15 @@ public class UserProductsPure {
 
     Integer calorie;
 
-    Integer freshDays;
+    LocalDate expirationDate;
 
 
     public void toModel(UserProductsEntity usrProd){
-        this.setOriginalProductId(usrProd.getProdUserId().getProdIdComp());
+        this.setEmbId(usrProd.getProdUserId());
         this.setTitle(usrProd.getTitle());
         this.setCalorie(usrProd.getCalorie());
         this.setProductsCount(usrProd.getProductsCount());
-        this.setFreshDays(usrProd.getFreshDays());
+        this.setExpirationDate(usrProd.getExpirationDate());
 
     }
 
@@ -28,13 +31,14 @@ public class UserProductsPure {
     public UserProductsPure() {
     }
 
-    public Long getOriginalProductId() {
-        return originalProductId;
+    public EmbProdUser getEmbId() {
+        return embId;
     }
 
-    public void setOriginalProductId(Long originalProductId) {
-        this.originalProductId = originalProductId;
+    public void setEmbId(EmbProdUser embId) {
+        this.embId = embId;
     }
+
 
     public String getTitle() {
         return title;
@@ -60,11 +64,11 @@ public class UserProductsPure {
         this.calorie = calorie;
     }
 
-    public Integer getFreshDays() {
-        return freshDays;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setFreshDays(Integer freshDays) {
-        this.freshDays = freshDays;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

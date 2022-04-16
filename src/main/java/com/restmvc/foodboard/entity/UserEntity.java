@@ -18,7 +18,7 @@ public class UserEntity {
     private String avatarLink;
     private LocalDate regDate;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "favoriteRecipes",
             joinColumns = @JoinColumn,

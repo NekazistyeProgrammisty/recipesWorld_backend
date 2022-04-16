@@ -21,11 +21,11 @@ import java.util.Optional;
 @Service
 public class RecipeService {
     @Autowired
-    RecipeRepo recRepo;
+    private RecipeRepo recRepo;
     @Autowired
-    ProductService productService;
+    private ProductService productService;
     @Autowired
-    ProdRecRepo prodRecRepo;
+    private ProdRecRepo prodRecRepo;
 
     public void newRecipe(RecipeEntity recipe) throws AlreadyExistException {
         if(recRepo.findBytitle(recipe.getTitle())==null){

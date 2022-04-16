@@ -59,4 +59,12 @@ public class ProductController {
             return new ResponseEntity("Продукт успешно удален", HttpStatus.OK);
         }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);}
     }
+
+
+    @GetMapping("/find_same/")
+    public ResponseEntity getProdsLLike(@RequestParam("user_product") String productTitle){
+        try {
+            return new ResponseEntity(productService.getProdsLike(productTitle),HttpStatus.OK);
+        }catch (NotFoundedException e ){return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);}
+    }
 }
