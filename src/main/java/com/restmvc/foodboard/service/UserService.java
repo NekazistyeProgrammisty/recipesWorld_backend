@@ -1,11 +1,13 @@
 package com.restmvc.foodboard.service;
 
 import com.restmvc.foodboard.entity.ProductEntity;
+import com.restmvc.foodboard.entity.RecipeEntity;
 import com.restmvc.foodboard.entity.UserEntity;
 import com.restmvc.foodboard.entity.UserProductsEntity;
 import com.restmvc.foodboard.entity_parts.EmbProdUser;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
+import com.restmvc.foodboard.model.RecipeModelPure;
 import com.restmvc.foodboard.model.UserModelProducts;
 import com.restmvc.foodboard.model.UserModelPure;
 import com.restmvc.foodboard.model.UserModelRecipes;
@@ -147,4 +149,16 @@ public class UserService {
         }else throw new NotFoundedException("Пользователь не найден");
     }
 
+
+    public ArrayList<RecipeModelPure> getRecipesByProducts(Long id) throws NotFoundedException{
+        Optional<UserEntity> user = userRepo.findById(id);
+        if(user.isPresent()){
+            UserEntity userEntity = user.get();
+            ArrayList<UserProductsEntity> prods = new ArrayList<>();
+            prods.addAll(userEntity.getProducts());
+            if (!prods.isEmpty()) {
+                return recipeService.findRecipesByProducts(prods);
+            }else throw new NotFoundedException("У пользователя не добавлены никакие продукты");
+        }else throw new NotFoundedException("Пользователь не найден");
+    }
 }

@@ -119,7 +119,12 @@ public class UserController {
         }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);}
     }
 
-
+    @GetMapping("/{id}/user_products/get_recipes")
+    public ResponseEntity getRecipesByProducts(@PathVariable Long id){
+        try{
+            return new ResponseEntity(userService.getRecipesByProducts(id), HttpStatus.OK);
+        }catch (NotFoundedException e){return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);}
+    }
 }
 
 

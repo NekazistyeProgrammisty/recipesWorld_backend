@@ -1,9 +1,6 @@
 package com.restmvc.foodboard.service;
 
-import com.restmvc.foodboard.entity.ProdRecEntity;
-import com.restmvc.foodboard.entity.ProductEntity;
-import com.restmvc.foodboard.entity.RecipeEntity;
-import com.restmvc.foodboard.entity.UserEntity;
+import com.restmvc.foodboard.entity.*;
 import com.restmvc.foodboard.entity_parts.EmbProdRecId;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
@@ -16,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -100,6 +99,40 @@ public class RecipeService {
             return pureRecs;
         }else throw new NotFoundedException("Рецепты не найдены");
     }
+
+
+    public ArrayList<RecipeModelPure> findRecipesByProducts(ArrayList<UserProductsEntity> productsList){
+        //РАБОТАЕТ НЕПРАВИЛЬНО, ОБЯЗАТЕЛЬНО НУЖНО СДЕЛАТЬ ТАК, ЧТОБЫ ПЕРВЫЙ ПРОДУКТ БЫЛ С НАИМ. КОЛИЧЕСТВОМ РЕЦЕПТОВ!!!!!!!!!!!!!!
+        Integer productsCount = productsList.size();
+        Map<RecipeEntity,Integer> recipeMap = new HashMap<>();
+        ArrayList<RecipeModelPure> finalRecipes = new ArrayList<>();
+        UserProductsEntity usersProdFirst = productsList.get(0);
+        for(ProdRecEntity prodRec:usersProdFirst.getProduct().getRecipes()){
+            recipeMap.put(prodRec.getRecipe(),1);
+        }
+        productsList.remove(usersProdFirst);
+        for(UserProductsEntity usersProd:productsList){
+            for(ProdRecEntity prodRec:usersProd.getProduct().getRecipes()){
+                RecipeEntity recipe =prodRec.getRecipe();
+                if(recipeMap.containsKey(recipe)){
+                    recipeMap.replace(recipe,recipeMap.get(recipe)+1);
+                }
+            }
+        }
+        for(RecipeEntity key:recipeMap.keySet()){
+            if(recipeMap.get(key).equals(productsCount)){
+                RecipeModelPure model = new RecipeModelPure();
+                model.toModel(key);
+                finalRecipes.add(model);
+            }
+        }
+
+        return finalRecipes;
+        //заполняем мапу конкретным реуептом и числом его повторений. Если чисто повторений реуепта равно числу продуктов то это наш рецепт.
+        //Для оптимизации можно сделать так: если новый рецепт не равен рецептам первого продукта, то в мапу его не добавляем
+        //первым в таком случае лучше взять продукт с наименьшим к-м рецептов!
+    }
+
 
     public Long[] parseIds(String recIds){
         String[] s = recIds.split("I");
