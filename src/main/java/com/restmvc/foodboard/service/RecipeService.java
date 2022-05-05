@@ -116,7 +116,6 @@ public class RecipeService {
             for(ProdRecEntity prodRecEntity:prodRecList){
                 if(!recipeEntities.contains(prodRecEntity.getRecipe())) {
                     recipeEntities.add(prodRecEntity.getRecipe());
-                    System.out.println("added " + prodRecEntity.getRecipe().getTitle());
                 }
             }
         }

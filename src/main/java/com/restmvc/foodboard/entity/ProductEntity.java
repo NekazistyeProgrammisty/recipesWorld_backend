@@ -16,10 +16,10 @@ public class ProductEntity {
     private String imgLink;
 
 
-    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.DETACH}, mappedBy = "product") //Каскад говорит что все операции которые будут происходить с продуктом, будут происходить с ним и в дочерней таблице =>
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product") //Каскад говорит что все операции которые будут происходить с продуктом, будут происходить с ним и в дочерней таблице =>
     List<ProdRecEntity> recipes = new ArrayList<>();       //=> Маппед говорит что колонка product в таблице ProdRecEntity будет взята отсюда
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<UserProductsEntity>  userProd = new ArrayList<>();
 
     public ProductEntity() {

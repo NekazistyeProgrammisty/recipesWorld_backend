@@ -1,9 +1,6 @@
 package com.restmvc.foodboard.service;
 
-import com.restmvc.foodboard.entity.ProductEntity;
-import com.restmvc.foodboard.entity.RecipeEntity;
-import com.restmvc.foodboard.entity.UserEntity;
-import com.restmvc.foodboard.entity.UserProductsEntity;
+import com.restmvc.foodboard.entity.*;
 import com.restmvc.foodboard.entity_parts.EmbProdUser;
 import com.restmvc.foodboard.exception.AlreadyExistException;
 import com.restmvc.foodboard.exception.NotFoundedException;
@@ -58,7 +55,10 @@ public class UserService {
 
 
     public Long deleteById(Long id) throws NotFoundedException {
-        if(userRepo.findById(id).isPresent()) {
+        Optional<UserEntity> userOpt = userRepo.findById(id);
+        if(userOpt.isPresent()) {
+            UserEntity user = userOpt.get();
+            user.getFavRecipes().removeAll(user.getFavRecipes());
             userRepo.deleteById(id);
             return id;
         }else throw new NotFoundedException("Пользователя "+id+" не существует");

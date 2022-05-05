@@ -18,7 +18,7 @@ public class UserEntity {
     private String avatarLink;
     private LocalDate regDate;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "favoriteRecipes",
             joinColumns = @JoinColumn,
@@ -27,7 +27,7 @@ public class UserEntity {
     List<RecipeEntity> favRecipes = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.DETACH})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<UserProductsEntity> products = new ArrayList<>();
 
 
