@@ -9,15 +9,16 @@ services:
     ports: 
       - 8000-8999:8080
     environment:
-      MYSQL_HOST: mysqldb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_PORT: 3306
+      - SQL_DATABASE=foodboard
+      - SQL_USER=admin
+      - SQL_PASSWORD=admin
+      - SQL_HOST=fb_database
+      - SQL_PORT=5432
 
-  hotel_db:
+  fb_database:
     image: postgres:12.0-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data_foodboard:/var/lib/postgresql/data/
     ports:
       - 5432:5432
     environment:
@@ -25,4 +26,4 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=foodboard
 volumes:
-  postgres_data:
+  postgres_data_foodboard:
