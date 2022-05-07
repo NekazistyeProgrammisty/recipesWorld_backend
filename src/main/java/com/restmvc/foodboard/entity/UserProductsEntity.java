@@ -11,7 +11,7 @@ public class UserProductsEntity {
     EmbProdUser prodUserId;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "person")
     UserEntity user;
 
     @ManyToOne
