@@ -54,7 +54,9 @@ public class ProductService {
     public void deleteProduct(Long id) throws NotFoundedException{
         Optional<ProductEntity> pr = prodRepo.findById(id);
         if(pr.isPresent()) {
-            prodRepo.delete(pr.get());
+            ProductEntity prod = pr.get();
+            prodRepo.delete(prod);
+
         }else throw new NotFoundedException("Продукта " + id + "не существует");
     }
 

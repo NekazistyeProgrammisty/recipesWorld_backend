@@ -58,7 +58,10 @@ public class UserService {
         Optional<UserEntity> userOpt = userRepo.findById(id);
         if(userOpt.isPresent()) {
             UserEntity user = userOpt.get();
-            user.getFavRecipes().removeAll(user.getFavRecipes());
+            ArrayList<RecipeEntity> recipesToDelete = new ArrayList<>(user.getFavRecipes());
+            for (RecipeEntity recipe:recipesToDelete){
+                user.removeFavRecipes(recipe);
+            }
             userRepo.deleteById(id);
             return id;
         }else throw new NotFoundedException("Пользователя "+id+" не существует");
@@ -160,5 +163,10 @@ public class UserService {
                 return recipeService.findRecipesByProducts(prods);
             }else throw new NotFoundedException("У пользователя не добавлены никакие продукты");
         }else throw new NotFoundedException("Пользователь не найден");
+    }
+
+    public void removeRecipe(RecipeEntity recipe, UserEntity user){
+        user.removeFavRecipes(recipe);
+        userRepo.save(user);
     }
 }

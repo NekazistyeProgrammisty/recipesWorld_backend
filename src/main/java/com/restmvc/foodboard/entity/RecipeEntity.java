@@ -27,6 +27,15 @@ public class RecipeEntity {
 
     public RecipeEntity() {
     }
+    public void addUsersFavRecipes(UserEntity user){
+        usersFavRecipes.add(user); //сначала добавляем рецепт в наш список
+        user.getFavRecipes().add(this); //затем добавляем юзера в рецепты
+    }
+    public void removeUsersFavRecipes(UserEntity user){
+        usersFavRecipes.remove(user);
+        user.getFavRecipes().remove(this);
+    }
+
 
     public RecipeCategoriesEntity getCategory() {
         return category;

@@ -9,6 +9,7 @@ import com.restmvc.foodboard.model.RecipeModelPure;
 import com.restmvc.foodboard.model.RecipeModelUsers;
 import com.restmvc.foodboard.repository.ProdRecRepo;
 import com.restmvc.foodboard.repository.RecipeRepo;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,7 +82,12 @@ public class RecipeService {
     public void deleteRecipe(Long id)throws NotFoundedException{
         Optional<RecipeEntity> recipe = recRepo.findById(id);
         if (recipe.isPresent()){
-            recRepo.deleteById(id);
+            RecipeEntity recipeEnt = recipe.get();
+            ArrayList<UserEntity> users = new ArrayList<>(recipeEnt.getUsersFavRecipes());
+            for(UserEntity user:users){
+                recipeEnt.removeUsersFavRecipes(user);
+            }
+            recRepo.delete(recipeEnt);
         }else{
             throw new NotFoundedException("Рецепт" + id + "не найден");
         }
@@ -186,6 +192,7 @@ public class RecipeService {
 //            }
 //        }
     }
+
 
 
     public Long[] parseIds(String recIds){
