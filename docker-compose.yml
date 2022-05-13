@@ -5,7 +5,7 @@ services:
     build: .
     command: java -jar target/foodboardJar.jar
     depends_on:
-      - mysqldb
+      - fb_database
     ports: 
       - 8081:8081
     environment:

@@ -49,6 +49,16 @@ public class UserController {
     }
 
 
+    @GetMapping("/auth")
+    public ResponseEntity authorization(@RequestParam(name = "login") String login, @RequestParam(name = "password") String password){
+        try {
+            return new ResponseEntity(userService.authorization(login, password), HttpStatus.OK);
+        }catch (NotFoundedException e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     @PostMapping("/auth/register/")
     public ResponseEntity registration(@RequestBody UserEntity user){
         try {

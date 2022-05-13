@@ -30,7 +30,8 @@ public class UserService {
     private UserProductsRepo userProductsRepo;
 
     public void registration(UserEntity user) throws AlreadyExistException {
-        if(userRepo.findBynickName(user.getNickName())==null){
+        Optional<UserEntity> userOpt = userRepo.findBynickName(user.getNickName());
+        if(userOpt.isEmpty()){
             userRepo.save(user);
         }else throw new AlreadyExistException("Пользователь с таким именем уже существует");
     }
@@ -168,5 +169,18 @@ public class UserService {
     public void removeRecipe(RecipeEntity recipe, UserEntity user){
         user.removeFavRecipes(recipe);
         userRepo.save(user);
+    }
+
+    public UserModelPure authorization(String login, String password)throws NotFoundedException{
+        Optional<UserEntity> userOpt = userRepo.findBynickName(login);
+        if(userOpt.isPresent()){
+            UserEntity user = userOpt.get();
+            if(user.getPassword().equals(password)){
+                UserModelPure model = new UserModelPure();
+                model.toModel(user);
+                return model;
+            }else throw new NotFoundedException("Неверный пароль");
+        }else throw  new NotFoundedException("Пользователь с таким логином не найден");
+
     }
 }
